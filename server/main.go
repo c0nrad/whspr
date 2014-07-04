@@ -6,7 +6,6 @@ import (
 )
 
 const (
-
     // HOST is the host we are listening on
     HOST = "localhost"
 

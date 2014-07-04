@@ -5,6 +5,7 @@ import (
     "crypto/cipher"
     "log"
     "bytes"
+    "encoding/base64"
 )
 
 var IV = []byte{0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15}
@@ -22,9 +23,11 @@ func encrypt(key, message, iv []byte) []byte {
     ciphertext := make([]byte, len(message))
     mode.CryptBlocks(ciphertext, message)
 
+    IV = ciphertext[len(ciphertext)-16:len(ciphertext)]
+
+    ciphertext = toBase64(ciphertext)
     return ciphertext
 }
-
 
 // PKCS#7
 func pad(message []byte) []byte {
@@ -39,13 +42,15 @@ func pad(message []byte) []byte {
 }
 
 func decrypt(key, ciphertext, iv []byte) []byte {
+    ciphertext = fromBase64(ciphertext)
+
     block, err := aes.NewCipher(pad(key))
     if err != nil {
         log.Fatalln("Failed to build aes cipher block", err);
     }
 
     if len(ciphertext) % aes.BlockSize != 0 {
-        log.Fatalln("decrypt cipher text not correct size", len(ciphertext), aes.BlockSize);
+        log.Fatalln("decrypt cipher text not correct size", len(ciphertext), ciphertext, aes.BlockSize);
     }
 
     mode := cipher.NewCBCDecrypter(block, iv)
@@ -70,4 +75,22 @@ func unpad(message []byte) []byte {
         i++;
     }
     return message[:len(message)-int(count)]
+}
+
+func toBase64(data []byte) []byte {
+    out := make([]byte, base64.StdEncoding.EncodedLen(len(data)))
+    base64.StdEncoding.Encode(out, data)
+    return out
+}
+
+func fromBase64(data []byte) []byte {
+    out := make([]byte, base64.StdEncoding.DecodedLen(len(data)))
+    n, err := base64.StdEncoding.Decode(out, data)
+
+    if err != nil {
+        log.Fatalln("Error decoding base64 in decrypt", err, n)
+    }
+
+    out = bytes.TrimRight(out, "\x00")
+    return out
 }
