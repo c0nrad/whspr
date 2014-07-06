@@ -9,15 +9,6 @@ import (
 	"os"
 )
 
-const (
-
-	// RemoteHost the remote host we are connecting to
-	RemoteHost = "localhost"
-
-	// RemotePort the remote port we are connecting to
-	RemotePort = "1337"
-)
-
 func main() {
 	parseTrustedCerts()
 

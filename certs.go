@@ -8,7 +8,6 @@ import (
 	"log"
 )
 
-var TrustedCertPath = "./certs/trusted"
 var NameKeyPairs map[string]*rsa.PublicKey
 
 func parseTrustedCerts() {

@@ -13,8 +13,8 @@ var DebugLine []byte
 func init() {
 	WindowHeight = tm.Height()
 	WindowWidth = tm.Width()
-	count := (WindowWidth - 20) / 2
-	message := append(bytes.Repeat([]byte("="), count), []byte(" WELCOME TO WHSPR ")...)
+	count := (WindowWidth - len(DisplayBanner)) / 2
+	message := append(bytes.Repeat([]byte("="), count), DisplayBanner...)
 	message = append(message, bytes.Repeat([]byte("="), count)...)
 	addMessage(message)
 	render()

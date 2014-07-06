@@ -8,14 +8,11 @@ type Message struct {
 	Name      []byte
 }
 
-// KEY is a SUPER SECRET PRE-SHARED KEY. `echo "1337h4x" | md5`
-var KEY = []byte("3a989dba6fe6c87f")
-
 func NewMessage(data []byte) Message {
 	iv := IV[:]
 
 	data = data
-	ciphertext := encrypt(KEY, data, iv)
+	ciphertext := encrypt([]byte(KEY), data, iv)
 	signature := sign(ciphertext)
 	name := Name
 
@@ -31,7 +28,7 @@ func ParseMessage(m Message) []byte {
 
 	valid := verify(m.Data, m.Signature, getPublicKey(m.Name))
 	if valid {
-		data := decrypt(KEY, m.Data, m.IV)
+		data := decrypt([]byte(KEY), m.Data, m.IV)
 		out := append(m.Name, ": "...)
 		out = append(out, data...)
 		return out
