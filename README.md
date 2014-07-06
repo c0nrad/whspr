@@ -3,13 +3,15 @@ Whspr
 
 _Shhhh it's a secret._
 
+![whspr](https://raw.githubusercontent.com/c0nrad/whspr/master/docs/whspr.png)
+
 ### Background
 
 Whspr is a secure messaging protocol. More of a just for fun project, it could be used when secure information needs to be transfered.
 
 I'm sure there are plenty of great solutions out there, but I wanted someting that would alow me to feel like a 1337h4x0r.
 
-## To use
+## Usage
 
 1. Generate a x509 certficate (RSA, 2048bit, extensions don't matter), with CommonName = your screen name.
 
@@ -51,6 +53,7 @@ Messages and transfered over the wire in json objects like such:
 
   Name:"WXpCdWNtRms="
 }
+```
 
 ### IV 
 
